@@ -1,4 +1,6 @@
 from app import app
+from app import mail
+from flask_mail import Message
 from flask import render_template, request, redirect, url_for, flash
 from werkzeug.utils import secure_filename
 from .forms import MyForm
@@ -29,10 +31,17 @@ def contact():
         subject = myform.subject.data
         message = myform.message.data
 
-        flash('You have successfully filled out the form')
-        return render_template('result.html',name=name,email=email,subject=subject,message=message)
-    flash_errors(myform)
+        msg = Message(myform.subject.data, sender=(myform.name.data,myform.email.data), recipients=["sandbox.smtp.mailtrap.io"])
+        msg.body = myform.message.data
+        mail.send(msg)
+        flash('Email sent successfully')
+        return redirect(url_for('home'))
+     
     return render_template("contact.html", form = myform)
+
+
+
+
         
 
 
