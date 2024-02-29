@@ -31,8 +31,8 @@ def contact():
         subject = myform.subject.data
         message = myform.message.data
 
-        msg = Message(myform.subject.data, sender=(myform.name.data,myform.email.data), recipients=["sandbox.smtp.mailtrap.io"])
-        msg.body = myform.message.data
+        msg = Message(subject, sender=(name,email), recipients=["sandbox.smtp.mailtrap.io"])
+        msg.body = message
         mail.send(msg)
         flash('Email sent successfully')
         return redirect(url_for('home'))
